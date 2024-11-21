@@ -17,6 +17,8 @@ use crate::{write_bytes, UNINIT_BYTE};
 ///   2. `[SIGNER]` The mint's minting authority.
 ///
 pub struct MintTo<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Mint Account.
     pub mint: &'a AccountInfo,
     /// Token Account.
@@ -52,7 +54,7 @@ impl<'a> MintTo<'a> {
         write_bytes(&mut instruction_data[1..9], &self.amount.to_le_bytes());
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 9) },
         };

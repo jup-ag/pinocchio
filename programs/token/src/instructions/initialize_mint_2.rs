@@ -15,6 +15,8 @@ use crate::{write_bytes, UNINIT_BYTE};
 /// ### Accounts:
 ///   0. `[WRITABLE]` Mint account
 pub struct InitializeMint2<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Mint Account.
     pub mint: &'a AccountInfo,
     /// Decimals.
@@ -58,7 +60,7 @@ impl<'a> InitializeMint2<'a> {
         }
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 67) },
         };

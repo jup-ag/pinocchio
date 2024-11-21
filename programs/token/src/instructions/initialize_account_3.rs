@@ -16,6 +16,8 @@ use crate::{write_bytes, UNINIT_BYTE};
 ///   0. `[WRITE]`  The account to initialize.
 ///   1. `[]` The mint this account will be associated with.
 pub struct InitializeAccount3<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// New Account.
     pub account: &'a AccountInfo,
     /// Mint Account.
@@ -48,7 +50,7 @@ impl<'a> InitializeAccount3<'a> {
         write_bytes(&mut instruction_data[1..], self.owner);
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 33) },
         };

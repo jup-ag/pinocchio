@@ -16,6 +16,8 @@ use crate::{write_bytes, UNINIT_BYTE};
 ///   1. `[WRITE]` Recipient account
 ///   2. `[SIGNER]` Authority account
 pub struct Transfer<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Sender account.
     pub from: &'a AccountInfo,
     /// Recipient account.
@@ -44,14 +46,13 @@ impl<'a> Transfer<'a> {
         // -  [0]: instruction discriminator (1 byte, u8)
         // -  [1..9]: amount (8 bytes, u64)
         let mut instruction_data = [UNINIT_BYTE; 9];
-
         // Set discriminator as u8 at offset [0]
         write_bytes(&mut instruction_data, &[3]);
         // Set amount as u64 at offset [1..9]
         write_bytes(&mut instruction_data[1..9], &self.amount.to_le_bytes());
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 9) },
         };

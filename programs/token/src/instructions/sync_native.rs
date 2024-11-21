@@ -12,6 +12,8 @@ use pinocchio::{
 ///   0. `[WRITE]`  The native token account to sync with its underlying
 ///      lamports.
 pub struct SyncNative<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo, 
     /// Native Token Account
     pub native_token: &'a AccountInfo,
 }
@@ -27,7 +29,7 @@ impl<'a> SyncNative<'a> {
         let account_metas: [AccountMeta; 1] = [AccountMeta::writable(self.native_token.key())];
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: &[17],
         };

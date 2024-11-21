@@ -13,6 +13,8 @@ use pinocchio::{
 ///   2. `[]` The new account's owner/multisignature.
 ///   3. `[]` Rent sysvar
 pub struct InitializeAccount<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// New Account.
     pub account: &'a AccountInfo,
     /// Mint Account.
@@ -39,7 +41,7 @@ impl<'a> InitializeAccount<'a> {
         ];
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: &[1],
         };

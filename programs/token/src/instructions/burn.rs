@@ -16,6 +16,8 @@ use crate::{write_bytes, UNINIT_BYTE};
 ///   1. `[WRITE]` The token mint.
 ///   2. `[SIGNER]` The account's owner/delegate.
 pub struct Burn<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Source of the Burn Account
     pub account: &'a AccountInfo,
     /// Mint Account
@@ -51,7 +53,7 @@ impl<'a> Burn<'a> {
         write_bytes(&mut instruction_data[1..], &self.amount.to_le_bytes());
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 9) },
         };

@@ -12,6 +12,8 @@ use pinocchio::{
 ///   1. `[WRITE]` The destination account.
 ///   2. `[SIGNER]` The account's owner.
 pub struct CloseAccount<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Token Account.
     pub account: &'a AccountInfo,
     /// Destination Account
@@ -35,7 +37,7 @@ impl<'a> CloseAccount<'a> {
         ];
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: &[9],
         };

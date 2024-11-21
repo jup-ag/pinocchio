@@ -15,6 +15,8 @@ use pinocchio::{
 ///   1. `[WRITE]` The token mint.
 ///   2. `[SIGNER]` The account's owner/delegate.
 pub struct BurnChecked<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Source of the Burn Account
     pub account: &'a AccountInfo,
     /// Mint Account
@@ -55,7 +57,7 @@ impl<'a> BurnChecked<'a> {
         write_bytes(&mut instruction_data[9..], &[self.decimals]);
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 10) },
         };

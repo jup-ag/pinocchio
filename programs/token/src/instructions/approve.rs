@@ -16,6 +16,8 @@ use crate::{write_bytes, UNINIT_BYTE};
 ///   1. `[]` The delegate.
 ///   2. `[SIGNER]` The source account owner.
 pub struct Approve<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Source Account.
     pub source: &'a AccountInfo,
     /// Delegate Account
@@ -51,7 +53,7 @@ impl<'a> Approve<'a> {
         write_bytes(&mut instruction_data[1..], &self.amount.to_le_bytes());
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 9) },
         };

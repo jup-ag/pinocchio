@@ -11,6 +11,8 @@ use pinocchio::{
 ///   0. `[WRITE]` The source account.
 ///   1. `[SIGNER]` The source account owner.
 pub struct Revoke<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Source Account.
     pub source: &'a AccountInfo,
     ///  Source Owner Account.
@@ -31,7 +33,7 @@ impl<'a> Revoke<'a> {
         ];
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: &[5],
         };

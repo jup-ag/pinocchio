@@ -12,6 +12,8 @@ use pinocchio::{
 ///   1. `[]` The token mint.
 ///   2. `[SIGNER]` The mint freeze authority.
 pub struct FreezeAccount<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Token Account to freeze.
     pub account: &'a AccountInfo,
     /// Mint Account.
@@ -35,7 +37,7 @@ impl<'a> FreezeAccount<'a> {
         ];
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: &[10],
         };

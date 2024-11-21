@@ -25,6 +25,8 @@ pub enum AuthorityType {
 ///   0. `[WRITE]` The mint or account to change the authority of.
 ///   1. `[SIGNER]` The current authority of the mint or account.
 pub struct SetAuthority<'a> {
+    /// Token Program Account.
+    pub token_program: &'a AccountInfo,
     /// Account (Mint or Token)
     pub account: &'a AccountInfo,
 
@@ -71,7 +73,7 @@ impl<'a> SetAuthority<'a> {
         }
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: self.token_program.key(),
             accounts: &account_metas,
             data: unsafe { from_raw_parts(instruction_data.as_ptr() as _, 35) },
         };

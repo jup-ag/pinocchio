@@ -37,6 +37,14 @@ name = "pinocchio"
 version = "0.6.0"
 
 [[package]]
+name = "pinocchio-ata"
+version = "0.1.0"
+dependencies = [
+ "pinocchio",
+ "pinocchio-pubkey",
+]
+
+[[package]]
 name = "pinocchio-log"
 version = "0.3.0"
 dependencies = [

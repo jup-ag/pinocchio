@@ -39,6 +39,7 @@ impl<'a> CreateIdempotent<'a> {
                 self.funding_account,
                 self.ata_account,
                 self.wallet_address,
+                self.token_mint,
                 self.system_program,
                 self.token_program,
             ],

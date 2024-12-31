@@ -30,7 +30,7 @@ impl<'a> CreateIdempotent<'a> {
         let instruction_data = [1];
 
         let instruction = Instruction {
-            program_id: &crate::ID,
+            program_id: &self.associated_token_program.key(),
             data: &instruction_data,
             accounts: &account_metas,
         };

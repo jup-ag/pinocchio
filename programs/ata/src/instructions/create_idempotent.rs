@@ -12,6 +12,7 @@ pub struct CreateIdempotent<'a> {
     pub token_mint: &'a AccountInfo,
     pub system_program: &'a AccountInfo,
     pub token_program: &'a AccountInfo,
+    pub associated_token_program: &'a AccountInfo,
 }
 
 impl<'a> CreateIdempotent<'a> {
@@ -23,6 +24,7 @@ impl<'a> CreateIdempotent<'a> {
             AccountMeta::readonly(self.token_mint.key()),
             AccountMeta::readonly(self.system_program.key()),
             AccountMeta::readonly(self.token_program.key()),
+            AccountMeta::readonly(self.associated_token_program.key()),
         ];
 
         let instruction_data = [1];
@@ -42,6 +44,7 @@ impl<'a> CreateIdempotent<'a> {
                 self.token_mint,
                 self.system_program,
                 self.token_program,
+                self.associated_token_program,
             ],
             signer_seeds,
         )?;
